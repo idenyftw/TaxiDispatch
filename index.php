@@ -14,9 +14,10 @@
 
 
 require_once "php/classes/log.php";
-
 require_once "php/repositories/zones-repo.php";
 require_once "php/repositories/vehicles-repo.php";
+
+echo "test";
 
 $zones = getAllZones();
 $vehicles = getAllVehicles();
