@@ -12,7 +12,6 @@
 
 <?php
 
-
 require_once "php/classes/log.php";
 require_once "php/repositories/zones-repo.php";
 require_once "php/repositories/vehicles-repo.php";
@@ -34,7 +33,7 @@ foreach($vehicles as $vehicle)
     echo $vehicle->licensePlate . " ". $vehicle->type->nameFr . " ". $vehicle->type->nameEn ."<br>";
 }
 
-$log = new Log(date("now"), "Premier log");
+$log = new Log("1990-10-13", "Premier log");
 echo $log->toString();
 
 ?>
