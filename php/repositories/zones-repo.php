@@ -14,13 +14,13 @@ function getAllZones(): array
 
         $zonesArray =  $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $postalCodes = [];
+        $zones = [];
 
         foreach ($zonesArray as $zoneArray) {
-            $postalCodes[] = new Zone($zoneArray['zone_id'], $zoneArray['name'], $zoneArray['zip_code']);
+            $zones[] = new Zone($zoneArray['zone_id'], $zoneArray['name'], $zoneArray['zip_code']);
         }
 
-        return $postalCodes;
+        return $zones;
 
     } catch (PDOException $e) {
         error_log('Database error: ' . $e->getMessage());
