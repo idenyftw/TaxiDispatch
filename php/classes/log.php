@@ -17,10 +17,10 @@ class Log
         }
     }
 
-    public string       $msg        { get{ return $this->_msg; }            set($value) { $this->_msg        = $value; } }
-    public bool         $is_enabled { get{ return $this->_is_enabled; }     set($value) { $this->_is_enabled = $value; } }
+    public string       $msg        { get{ return $this->_msg; }            set(string $value) { $this->_msg        = $value; } }
+    public bool         $is_enabled { get{ return $this->_is_enabled; }     set(bool $value) { $this->_is_enabled = $value; } }
 
-    public function __construct(Datetime $date, string $msg)
+    public function __construct(string $date, string $msg)
     {
         $this->date       = $date;
         $this->msg        = $msg;
