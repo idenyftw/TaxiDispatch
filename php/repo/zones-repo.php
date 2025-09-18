@@ -7,7 +7,7 @@ function getAllZones(): array
 {
     try {
 
-        $pdo = connexionDB();
+        $pdo = connDB();
         $sql = "SELECT * FROM Zones";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

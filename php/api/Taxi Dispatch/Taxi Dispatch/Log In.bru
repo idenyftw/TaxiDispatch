@@ -1,0 +1,23 @@
+meta {
+  name: Log In
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost/TaxiDispatch/php/api/api.php
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+   "endpoint":"user/log_in",
+   "username":"admin",
+   "password":"Super256"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -14,7 +14,6 @@ class VehicleType {
     }
 }
 
-
 class Vehicle
 {
     public int $id;

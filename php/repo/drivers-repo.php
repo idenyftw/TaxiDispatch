@@ -7,7 +7,7 @@ function getAllVehicles(): array
 {
     try {
 
-        $pdo = connexionDB();
+        $pdo = connDB();
         $sql = "SELECT * FROM Drivers";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

@@ -7,7 +7,7 @@ function getAllVehicles(): array
 {
     try {
 
-        $pdo = connexionDB();
+        $pdo = connDB();
         $sql = "SELECT * FROM Vehicles v
                 INNER JOIN VehicleType t ON v.type_id = t.type_id ";
         $stmt = $pdo->prepare($sql);

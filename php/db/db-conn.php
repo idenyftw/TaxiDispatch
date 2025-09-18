@@ -2,7 +2,7 @@
 
 require_once "db-var.php";
 
-function connexionDB() {
+function connDB() {
 
     try {
         $pdo = new PDO("mysql:host=".HOST.";dbname=".DB_NAME.";charset=utf8", USERNAME, PASSWORD, [

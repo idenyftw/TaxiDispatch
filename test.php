@@ -33,5 +33,12 @@ foreach($vehicles as $vehicle)
 
 $log = new Log("1990-10-13", "Premier log");
 echo $log->toString();
+echo "<br>";
+$hash = password_hash("Super256", PASSWORD_DEFAULT);
+
+echo $hash;
+
+echo "<br>";
+echo password_verify("Super256",$hash);
 
 ?>
