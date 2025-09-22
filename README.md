@@ -2,3 +2,10 @@
 
 Le but de ce projet est de créer une application web qui permet de gérer la flotte des taxis sur la ville de Genève  (endroit, nb de courses, temps passé, véhicules situées dans un code postal).
 
+# 15.09.25
+
+Concevoir système LogIn et implemantation API
+
+# 22.09.25
+
+Implementation des Logs dans la partie Log In de l'API
