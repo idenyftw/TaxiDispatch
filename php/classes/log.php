@@ -9,7 +9,7 @@ class Log
     public string  $date { 
         get
         { 
-            return $this->_date->format('Y-m-d'); 
+            return $this->_date->format("Y-m-d H:i:s"); 
         } 
         set(string $value) 
         { 

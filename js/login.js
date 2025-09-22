@@ -32,12 +32,15 @@ const loginForm = document.querySelector("#loginForm");
             .then(data =>{
                 if(data.status == "success")
                 {
-                    console.log("Success:", data.message);
-                    resetInputs();
+                    document.cookie = "token="+data.token;
+
+                    console.log("Message:", data.log);
+                    
+                    window.location.href = "html/dashboard.php";
                 }
                 else
                 {
-                    console.log("Error:", data.message);
+                    console.log("Error:", data);
                 }
             })
         }

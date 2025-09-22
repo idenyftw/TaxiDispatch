@@ -1,6 +1,8 @@
 <?php
 
 require __DIR__ . '/../repo/users-repo.php';
+require __DIR__ . '/../classes/log.php';
+
 header('Content-Type: application/json');
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -46,16 +48,18 @@ function logIn($data)
 
                 if(password_verify($inputPassword, $passwordHash))
                 {
+                    $token = updateUserToken($userId);
+
+                    $log = new Log(date("Y-m-d H:i:s"), $inputUsername . " logged in succesfully");
                     
-
-
                     http_response_code(200);
-                    echo json_encode(['status' => 'success', 'message' => 'Correct Password!']);
+                    echo json_encode(['status' => 'success', 'token' => $token, 'log' => $log->toString()]);
                 }
                 else
                 {
                     http_response_code(401);
-                    echo json_encode(['status' => 'error', 'message' => 'Invalid Password!']);
+                    $log = new Log(date("Y-m-d H:i:s"), " failed log in attempt for user: " .  $inputUsername );
+                    echo json_encode(['status' => 'error', 'message' => 'Invalid Password!', 'log' => $log->toString()]);
                 }
             }
             else
