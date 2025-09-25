@@ -1,7 +1,7 @@
 <?php 
 
-require_once "php/db/db-conn.php";
-require_once "php/classes/vehicle.php";
+require_once __DIR__ . '/../db/db-conn.php';
+require_once __DIR__ . '/../classes/vehicle.php';
 
 function getAllVehicles(): array
 {

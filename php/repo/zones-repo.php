@@ -1,12 +1,11 @@
 <?php
 
-require_once "php/db/db-conn.php";
-require_once "php/classes/zone.php";
+require_once __DIR__ . '/../db/db-conn.php';
+require_once __DIR__ . '/../classes/zone.php';
 
 function getAllZones(): array
 {
     try {
-
         $pdo = connDB();
         $sql = "SELECT * FROM Zones";
         $stmt = $pdo->prepare($sql);

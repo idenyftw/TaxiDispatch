@@ -1,7 +1,14 @@
 <?php
 
+
 require __DIR__ . '/../repo/users-repo.php';
+require __DIR__ . '/../repo/zones-repo.php';
+require __DIR__ . '/../repo/vehicles-repo.php';
+require __DIR__ . '/../repo/drivers-repo.php';
+
+require __DIR__ . '/../classes/notification.php';
 require __DIR__ . '/../classes/log.php';
+
 
 header('Content-Type: application/json');
 
@@ -15,6 +22,15 @@ if ($method === 'POST')
     {
         case "user/log_in":
             logIn($data);
+            break;
+        case "zone/get_all":
+            fetchAllZones();
+            break;
+        case "fleet/get_all":
+            fetchAllVehicles();
+            break;
+        case "driver/get_all":
+            fetchAllDrivers();
             break;
         default:
             http_response_code(404);
@@ -51,28 +67,92 @@ function logIn($data)
                     $token = updateUserToken($userId);
 
                     $log = new Log(date("Y-m-d H:i:s"), $inputUsername . " logged in succesfully");
+                    $notification = new Notification("Logged in succesfully");
                     
                     http_response_code(200);
-                    echo json_encode(['status' => 'success', 'token' => $token, 'log' => $log->toString()]);
+                    echo json_encode(['status' => 'success', 'message' => $notification->toString(), 'token' => $token, 'log' => $log->toString()]);
                 }
                 else
                 {
+
                     http_response_code(401);
                     $log = new Log(date("Y-m-d H:i:s"), " failed log in attempt for user: " .  $inputUsername );
-                    echo json_encode(['status' => 'error', 'message' => 'Invalid Password!', 'log' => $log->toString()]);
+                    $notification = new Notification("Invalid password!");
+
+                    echo json_encode(['status' => 'error', 'message' => $notification->toString(), 'log' => $log->toString()]);
                 }
             }
             else
             {
                 http_response_code(404);
-                echo json_encode(['status' => 'error', 'message' => 'User not found']);
+
+                $notification = new Notification("User not found");
+
+                echo json_encode(['status' => 'error', 'message' => $notification->toString()]);
             }
         }
         else
         {
             http_response_code(401);
-            echo json_encode(['status' => 'error', 'message' => 'Invalid login credentials']);
+
+            $notification = new Notfication("Invalid login credentials");
+
+            echo json_encode(['status' => 'error', 'message' => $notification->toString()]);
         }
+    }
+    catch(Exception $e) 
+    {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function fetchAllZones()
+{
+    try
+    {
+        $zones = getAllZones();
+        http_response_code(200);
+
+        $notification = new Notification("Fetched all zones");
+        echo json_encode(['status' => 'success','message' => $notification->toString(), "zones" => $zones]);
+
+    }
+    catch(Exception $e) 
+    {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function fetchAllVehicles()
+{
+    try
+    {
+        $vehicles = getAllVehicles();
+        http_response_code(200);
+
+        $notification = new Notification("Fetched all vehicles");
+        echo json_encode(['status' => 'success','message' => $notification->toString(), "fleet" => $vehicles]);
+
+    }
+    catch(Exception $e) 
+    {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function fetchAllDrivers()
+{
+    try
+    {
+        $drivers = getAllDrivers();
+        http_response_code(200);
+
+        $notification = new Notification("Fetched all drivers");
+        echo json_encode(['status' => 'success','message' => $notification->toString(), "drivers" => $drivers]);
+
     }
     catch(Exception $e) 
     {

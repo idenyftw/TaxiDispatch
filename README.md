@@ -9,3 +9,8 @@ Concevoir système LogIn et implemantation API
 # 22.09.25
 
 Implementation des Logs dans la partie Log In de l'API
+
+# 25.09.25
+
+Implementation système notification
+Implementation fetch tables sur le dashboard

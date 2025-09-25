@@ -1,12 +1,11 @@
 <?php 
 
-require_once "php/db/db-conn.php";
-require_once "php/classes/driver.php";
+require_once __DIR__ . '/../db/db-conn.php';
+require_once __DIR__ . '/../classes/driver.php';
 
-function getAllVehicles(): array
+function getAllDrivers(): array
 {
     try {
-
         $pdo = connDB();
         $sql = "SELECT * FROM Drivers";
         $stmt = $pdo->prepare($sql);
@@ -20,7 +19,7 @@ function getAllVehicles(): array
             $drivers[] = new Driver($driver['driver_id'], $driver['first_name'], $driver['last_name']);
         }
 
-        return $vehicles;
+        return $drivers;
 
     } catch (PDOException $e) {
         error_log('Database error: ' . $e->getMessage());

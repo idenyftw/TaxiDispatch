@@ -17,7 +17,22 @@ class Log
         }
     }
 
-    public string       $msg        { get{ return $this->_msg; }            set(string $value) { $this->_msg        = $value; } }
+    public string  $msg        { 
+        get{ return $this->_msg; }            
+        set(string $value) 
+        {             
+            if($value)
+            {
+                $this->_msg = $value;
+            }
+            else
+            {
+                $this->_msg = "Default Message";
+            }
+        } 
+    }
+
+
     public bool         $is_enabled { get{ return $this->_is_enabled; }     set(bool $value) { $this->_is_enabled = $value; } }
 
     public function __construct(string $date, string $msg)
@@ -29,6 +44,6 @@ class Log
 
     public function toString() : string
     {
-        return "LOG ".$this->date. ": ". $this->msg; 
+        return $this->date. ": ". $this->msg; 
     }
 }

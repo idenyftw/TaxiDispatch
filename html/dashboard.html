@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <table class="table" id="zoneTable">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Zip Code</th>
+                    <th scope="col">Info</th>
+                    </tr>
+                </thead>
+                <tbody id="zoneTableBody">
+                </tbody>
+                </table>
+                <button class="btn btn-primary" id="fetchZones">Fetch zones</button>
+            </div>
+
+            <div class="col">
+                <table class="table" id="fleetTable">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">License plate</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Info</th>
+                    </tr>
+                </thead>
+                <tbody id="fleetTableBody">
+                </tbody>
+                </table>
+                <button class="btn btn-primary" id="fetchFleet">Fetch fleet</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../js/dashboard.js"></script>
+</html>
