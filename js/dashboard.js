@@ -6,11 +6,16 @@ const zoneTableBody = document.querySelector("#zoneTableBody");
 const fleetTable = document.querySelector("#fleetTable");
 const fleetTableBody = document.querySelector("#fleetTableBody");
 
+const driversTable = document.querySelector("#driversTable");
+const driversTableBody = document.querySelector("#driversTableBody");
+
 const btnFetchZones = document.querySelector("#fetchZones");
 const btnFetchFleet = document.querySelector("#fetchFleet");
+const btnFetchDrivers = document.querySelector("#fetchDrivers");
 
 btnFetchZones.addEventListener("click",fetchAllZones);
 btnFetchFleet.addEventListener("click",fetchFleet);
+btnFetchDrivers.addEventListener("click",fetchDrivers);
 
 function fetchAllZones()
 {
@@ -26,6 +31,7 @@ function fetchAllZones()
         if(data.status == "success")
         {
             console.log(data);
+            alert(data.message.msg);
 
             const zones = data.zones;
 
@@ -56,6 +62,7 @@ function fetchAllZones()
         }
         else
         {
+            alert(data.message);
             console.log("Error:", data);
         }
     })
@@ -80,6 +87,7 @@ function fetchFleet()
         if(data.status == "success")
         {
             console.log(data);
+            alert(data.message.msg);
 
             const fleet = data.fleet;
 
@@ -110,6 +118,7 @@ function fetchFleet()
         }
         else
         {
+            alert(data.message);
             console.log("Error:", data);
         }
     })
@@ -118,4 +127,60 @@ function fetchFleet()
 function getVehicleDetails(id)
 {
     console.log("Get vehicle " + id + " details");
+}
+
+function fetchDrivers()
+{
+    console.log("fetch drivers");
+    const data = {endpoint: "driver/get_all"};
+
+    fetch("../php/api/api.php", {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data =>{
+        if(data.status == "success")
+        {
+            console.log(data);
+            alert(data.message.msg);
+
+            const drivers = data.drivers;
+
+            drivers.forEach(driver => {
+                let tableRow = document.createElement('tr');
+            
+                let idCell = document.createElement('td');
+                let firstNameCell = document.createElement('td');
+                let lastNameCell  = document.createElement('td');
+
+                let btnDetails = document.createElement("button");
+                btnDetails.classList.add("btn");
+                btnDetails.classList.add("btn-primary");
+                btnDetails.textContent = "Details";
+                btnDetails.addEventListener("click", () => getDriverDetails(driver.id));
+
+                idCell.textContent        = driver.id;
+                firstNameCell.textContent = driver.firstName;
+                lastNameCell.textContent  = driver.lastName;
+
+                tableRow.appendChild(idCell);
+                tableRow.appendChild(firstNameCell);
+                tableRow.appendChild(lastNameCell);
+                tableRow.appendChild(btnDetails);
+
+                driversTableBody.appendChild(tableRow);
+            });
+        }
+        else
+        {
+            alert(data.message);
+            console.log("Error:", data);
+        }
+    })
+}
+
+function getDriverDetails(id)
+{
+    console.log("Get driver " + id + " details");
 }

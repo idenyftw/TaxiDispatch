@@ -36,7 +36,7 @@ const loginForm = document.querySelector("#loginForm");
 
                     console.log("Message:", data.log);
                     
-                    window.location.href = "html/dashboard.php";
+                    window.location.href = "html/dashboard.html";
                 }
                 else
                 {

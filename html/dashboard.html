@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
     <h1>Dashboard</h1>
@@ -12,7 +13,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <table class="table" id="zoneTable">
+                <table class="table" id="zoneTable" >
                 <thead>
                     <tr>
                     <th scope="col">#</th>
@@ -41,6 +42,22 @@
                 </tbody>
                 </table>
                 <button class="btn btn-primary" id="fetchFleet">Fetch fleet</button>
+            </div>
+
+             <div class="col">
+                <table class="table" id="driversTable">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Info</th>
+                    </tr>
+                </thead>
+                <tbody id="driversTableBody">
+                </tbody>
+                </table>
+                <button class="btn btn-primary" id="fetchDrivers">Fetch drivers</button>
             </div>
         </div>
     </div>

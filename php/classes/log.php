@@ -32,7 +32,6 @@ class Log
         } 
     }
 
-
     public bool         $is_enabled { get{ return $this->_is_enabled; }     set(bool $value) { $this->_is_enabled = $value; } }
 
     public function __construct(string $date, string $msg)
@@ -41,9 +40,19 @@ class Log
         $this->msg        = $msg;
         $this->is_enabled = false;
     }
+    
+    public function __toString(){
+        return $this->date. ": ". $this->msg. " \n"; 
+    }
 
-    public function toString() : string
+    public function write()
     {
-        return $this->date. ": ". $this->msg; 
+        $fileName = "LOG-".date("Y.m.d").".txt";
+        $filePath = "../../logs/".$fileName;
+
+        $file = fopen($filePath, "a") or die("Unable to open file!");;
+
+        fwrite($file, $this->__toString());
+        fclose($file);
     }
 }

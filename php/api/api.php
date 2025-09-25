@@ -67,19 +67,23 @@ function logIn($data)
                     $token = updateUserToken($userId);
 
                     $log = new Log(date("Y-m-d H:i:s"), $inputUsername . " logged in succesfully");
+                    $log->write();
+
                     $notification = new Notification("Logged in succesfully");
                     
                     http_response_code(200);
-                    echo json_encode(['status' => 'success', 'message' => $notification->toString(), 'token' => $token, 'log' => $log->toString()]);
+                    echo json_encode(['status' => 'success', 'message' => $notification, 'token' => $token, 'log' => $log]);
                 }
                 else
                 {
 
                     http_response_code(401);
-                    $log = new Log(date("Y-m-d H:i:s"), " failed log in attempt for user: " .  $inputUsername );
+                    $log = new Log(date("Y-m-d H:i:s"), "Failed log in attempt for user: " .  $inputUsername );
+                    $log->write();
+
                     $notification = new Notification("Invalid password!");
 
-                    echo json_encode(['status' => 'error', 'message' => $notification->toString(), 'log' => $log->toString()]);
+                    echo json_encode(['status' => 'error', 'message' => $notification, 'log' => $log]);
                 }
             }
             else
@@ -88,7 +92,7 @@ function logIn($data)
 
                 $notification = new Notification("User not found");
 
-                echo json_encode(['status' => 'error', 'message' => $notification->toString()]);
+                echo json_encode(['status' => 'error', 'message' => $notification]);
             }
         }
         else
@@ -97,7 +101,7 @@ function logIn($data)
 
             $notification = new Notfication("Invalid login credentials");
 
-            echo json_encode(['status' => 'error', 'message' => $notification->toString()]);
+            echo json_encode(['status' => 'error', 'message' => $notification]);
         }
     }
     catch(Exception $e) 
@@ -115,7 +119,8 @@ function fetchAllZones()
         http_response_code(200);
 
         $notification = new Notification("Fetched all zones");
-        echo json_encode(['status' => 'success','message' => $notification->toString(), "zones" => $zones]);
+
+        echo json_encode(['status' => 'success','message' => $notification, "zones" => $zones]);
 
     }
     catch(Exception $e) 
@@ -133,7 +138,7 @@ function fetchAllVehicles()
         http_response_code(200);
 
         $notification = new Notification("Fetched all vehicles");
-        echo json_encode(['status' => 'success','message' => $notification->toString(), "fleet" => $vehicles]);
+        echo json_encode(['status' => 'success','message' => $notification, "fleet" => $vehicles]);
 
     }
     catch(Exception $e) 
@@ -151,7 +156,7 @@ function fetchAllDrivers()
         http_response_code(200);
 
         $notification = new Notification("Fetched all drivers");
-        echo json_encode(['status' => 'success','message' => $notification->toString(), "drivers" => $drivers]);
+        echo json_encode(['status' => 'success','message' => $notification, "drivers" => $drivers]);
 
     }
     catch(Exception $e) 
