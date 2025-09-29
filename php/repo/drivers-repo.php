@@ -27,4 +27,31 @@ function getAllDrivers(): array
     }
 }
 
+function getDriverById(int $id)
+{
+    try {
+        $pdo = connDB();
+        $sql = "SELECT * FROM Drivers WHERE driver_id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        $driver = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($driver === false) {
+            return null;
+        }
+
+        return new Driver(
+            $driver['driver_id'],
+            $driver['first_name'],
+            $driver['last_name']
+        );
+
+    } catch (PDOException $e) {
+        error_log('Database error: ' . $e->getMessage());
+        throw $e;
+    }
+}
+
 

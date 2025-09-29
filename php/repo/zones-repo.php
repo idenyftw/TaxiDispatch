@@ -27,28 +27,29 @@ function getAllZones(): array
     }
 }
 
-/*
-function acheterPlace($id,$places): bool
+function getZoneById(int $id)
 {
     try {
-        $pdo = connexionDB();
-
-        $sql = "UPDATE shows 
-                SET seatSold = :seatSold
-                WHERE id = :id";
-
+        $pdo = connDB();
+        $sql = "SELECT * FROM Zones WHERE zone_id = :id";
         $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
 
-        $stmt->execute([
-            ':seatSold' => $places+1,
-            ':id' => $id
-        ]);
+        $zoneArray = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return true;
+        if ($zoneArray === false) {
+            return null;
+        }
+
+        return new Zone(
+            $zoneArray['zone_id'],
+            $zoneArray['name'],
+            $zoneArray['zip_code']
+        );
 
     } catch (PDOException $e) {
         error_log('Database error: ' . $e->getMessage());
         throw $e;
     }
 }
-*/

@@ -32,4 +32,38 @@ function getAllVehicles(): array
     }
 }
 
+function getVehicleById(int $id)
+{
+    try {
+        $pdo = connDB();
+        $sql = "SELECT * FROM Vehicles v
+                INNER JOIN VehicleType t ON v.type_id = t.type_id
+                WHERE v.vehicle_id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        $vehicleArray = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($vehicleArray === false) {
+            return null;
+        }
+
+        $type = new VehicleType(
+            $vehicleArray['type_id'],
+            $vehicleArray['name_en'],
+            $vehicleArray['name_fr']
+        );
+
+        return new Vehicle(
+            $vehicleArray['vehicle_id'],
+            $vehicleArray['license_plate'],
+            $type
+        );
+
+    } catch (PDOException $e) {
+        error_log('Database error: ' . $e->getMessage());
+        throw $e;
+    }
+}
 
