@@ -14,3 +14,7 @@ Implementation des Logs dans la partie Log In de l'API
 
 Implementation système notification
 Implementation fetch tables sur le dashboard
+
+# 29.09.25
+
+Implementation classe Trip
