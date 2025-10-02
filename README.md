@@ -18,3 +18,13 @@ Implementation fetch tables sur le dashboard
 # 29.09.25
 
 Implementation classe Trip
+
+# 02.10.25
+
+Implementation fonctionnalités dashboard
+
+# Présentation 16.10.25
+
+Première version dashboard :
+- afficher les trajets
+- gestionner les vehicules / chauffeurs depuis l'interface
