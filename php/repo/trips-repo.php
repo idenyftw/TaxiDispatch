@@ -68,10 +68,3 @@ function getAllTrips(): array
 
     return $trips;
 }
-
-$trips = getAllTrips();
-
-foreach($trips as $trip)
-{
-    var_dump($trip->toArray());
-}

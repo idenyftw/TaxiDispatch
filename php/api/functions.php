@@ -138,10 +138,12 @@ function fetchAllTrips()
     try
     {
         $trips = getAllTrips();
+
         http_response_code(200);
 
         $notification = new Notification("Fetched all trips");
-        echo json_encode(['status' => 'success','message' => $notification, "trips" => $trips->toArray()]);
+
+        echo json_encode(['status' => 'success','message' => $notification, "trips" => $trips]);
     }
     catch(Exception $e) 
     {

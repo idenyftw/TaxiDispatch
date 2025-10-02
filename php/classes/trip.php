@@ -12,7 +12,7 @@ enum TripStatus
     case AwaitingConfirmation;
 }
 
-class Trip
+class Trip implements JsonSerializable
 {
     public int $id;
 
@@ -48,7 +48,7 @@ class Trip
         $this->vehicle      = $vehicle;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'id'        => $this->id,
