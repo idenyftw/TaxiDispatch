@@ -1,3 +1,4 @@
-INSERT INTO Users (first_name, last_name, username, password, role) 
+INSERT INTO Users (first_name, last_name, username, password, role, driver_id) 
 VALUES 
-("admin", "admin", "admin", "$2y$12$NbZIl7C1sbopDUCKmpU8DOKAhrBbOsdK6bVrNLxKbd0YiUdCn/P9S", "admin");
+("Marc", "Dupont", "md_driver_01", "$2y$12$2q2HaNFOEsfQ0ZUskE/nxeOzW1bOA7lIcnwmGnPSNgUytiOq8nIiG", "driver", 1);
+

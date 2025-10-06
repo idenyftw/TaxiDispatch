@@ -39,7 +39,12 @@ function logIn($data)
                     $notification = new Notification("Logged in succesfully");
                     
                     http_response_code(200);
-                    echo json_encode(['status' => 'success', 'message' => $notification, 'token' => $token, 'log' => $log]);
+                    echo json_encode([
+                    'status' => 'success',
+                    'message' => $notification,
+                    'token' => $token,
+                    'log' => $log
+                    ]);
                 }
                 else
                 {
@@ -67,6 +72,56 @@ function logIn($data)
             http_response_code(401);
 
             $notification = new Notfication("Invalid login credentials");
+
+            echo json_encode(['status' => 'error', 'message' => $notification]);
+        }
+    }
+    catch(Exception $e) 
+    {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function fetchUserRole($data)
+{
+    $token = trim($data['token'] ?? '');
+
+    try
+    {
+        if($token)
+        {
+            $role = getUserRole($token);
+
+            if($role != "")
+            {
+                $log = new Log(date("Y-m-d H:i:s"), $token . " requested role");
+                $log->write();
+
+                $notification = new Notification($token ." fetched role succesfully");
+                
+                http_response_code(200);
+                echo json_encode([
+                'status' => 'success',
+                'message' => $notification,
+                'role' => $role,
+                'log' => $log
+                ]);
+            }
+            else
+            {
+                http_response_code(404);
+
+                $notification = new Notification("User not found");
+
+                echo json_encode(['status' => 'error', 'message' => $notification]);
+            }
+        }
+        else
+        {
+            http_response_code(404);
+
+            $notification = new Notfication("Invalid token");
 
             echo json_encode(['status' => 'error', 'message' => $notification]);
         }

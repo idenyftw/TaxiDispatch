@@ -15,6 +15,9 @@ if ($method === 'POST')
         case "user/log_in":
             logIn($data);
             break;
+        case "user/get_role":
+            fetchUserRole($data);
+            break;
         case "zone/get_all":
             fetchAllZones();
             break;

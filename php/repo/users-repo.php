@@ -48,6 +48,20 @@ function getUserPasswordHash($userId) : string
     return $dbResult['password'];
 }
 
+function getUserRole($token)
+{
+    $pdo = connDB();
+
+    $stmt = $pdo->prepare('
+        SELECT role FROM Users WHERE token = ? LIMIT 1;
+    ');
+
+    $stmt->execute([$token]);
+    $dbResult = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $dbResult ? $dbResult['role'] : "";
+}
+
 function updateUserToken($userId) : string
 {
     $pdo = connDB();
@@ -59,3 +73,5 @@ function updateUserToken($userId) : string
 
     return $token;
 }
+
+//var_dump(getUserRole("68e3a90faea416.24096060"));

@@ -33,7 +33,6 @@ const loginForm = document.querySelector("#loginForm");
                 if(data.status == "success")
                 {
                     document.cookie = "token="+data.token;
-
                     console.log("Message:", data.log);
                     
                     window.location.href = "html/dashboard.html";
