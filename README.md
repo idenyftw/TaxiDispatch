@@ -23,6 +23,10 @@ Implementation classe Trip
 
 Implementation fonctionnalités dashboard
 
+# 06.10.25
+
+Implementation coté chauffeur
+
 # Présentation 16.10.25
 
 Première version dashboard :
