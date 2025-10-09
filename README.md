@@ -27,6 +27,10 @@ Implementation fonctionnalités dashboard
 
 Implementation coté chauffeur
 
+# 09.10.25
+
+Affichage pages differentes en fonction du rôle
+
 # Présentation 16.10.25
 
 Première version dashboard :
