@@ -1,7 +1,6 @@
 import { loadAdminPage } from './dashboard-admin.js';
 import { loadDriverPage } from './dashboard-driver.js';
 
-const cookie = document.cookie;
 const token = getCookie("token");
 
 console.log("token "+ token);

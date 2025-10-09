@@ -30,6 +30,9 @@ if ($method === 'POST')
         case "trip/get_all":
             fetchAllTrips();
             break;
+        case "trip/get_awaiting":
+            fetchAllOrders();
+            break;
         default:
             http_response_code(404);
             echo json_encode(['status' => 'error', 'message' => "The specified endpoint doesn't exist"]);

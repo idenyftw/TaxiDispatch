@@ -10,7 +10,6 @@ require __DIR__ . '/../repo/trips-repo.php';
 require __DIR__ . '/../classes/notification.php';
 require __DIR__ . '/../classes/log.php';
 
-
 function logIn($data)
 {
     $inputUsername = trim($data['username'] ?? '');
@@ -199,6 +198,25 @@ function fetchAllTrips()
         $notification = new Notification("Fetched all trips");
 
         echo json_encode(['status' => 'success','message' => $notification, "trips" => $trips]);
+    }
+    catch(Exception $e) 
+    {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function fetchAllOrders()
+{
+    try
+    {
+        $orders = getAllOrders();
+
+        http_response_code(200);
+
+        $notification = new Notification("Fetched all orders");
+
+        echo json_encode(['status' => 'success','message' => $notification, "orders" => $orders]);
     }
     catch(Exception $e) 
     {

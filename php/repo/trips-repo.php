@@ -68,3 +68,66 @@ function getAllTrips(): array
 
     return $trips;
 }
+
+function getAllOrders(): array
+{
+    $pdo = connDB();
+
+    $stmt = $pdo->prepare('SELECT * FROM Trips WHERE status = "awaiting_confirmation"; ');
+    $stmt->execute();
+    
+    $ordersArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $trips = [];
+
+    foreach ($ordersArray as $orderArray) 
+    {
+        $status = match ($orderArray['status']) 
+        {
+            'cancelled'             => TripStatus::Cancelled,
+            'ended'                 => TripStatus::Ended,
+            'ongoing'               => TripStatus::Ongoing,
+            'awaiting_confirmation' => TripStatus::AwaitingConfirmation,
+            default                 => throw new Exception("Unknown trip status: ".$orderArray['status'])
+        };
+
+        // Handle null
+        $startTime = !empty($orderArray['start_time'])
+            ? new DateTime($orderArray['start_time'])
+            : null;
+
+        $endTime = !empty($orderArray['end_time'])
+            ? new DateTime($orderArray['end_time'])
+            : null;
+
+        $driver  = !empty($orderArray['driver_id'])
+            ? getDriverById($orderArray['driver_id'])
+            : null;
+
+        $vehicle = !empty($orderArray['vehicle_id'])
+            ? getVehicleById($orderArray['vehicle_id'])
+            : null;
+
+        $zoneStart = !empty($orderArray['start_zone_id'])
+            ? getZoneById($orderArray['start_zone_id'])
+            : null;
+
+        $zoneEnd = !empty($orderArray['end_zone_id'])
+            ? getZoneById($orderArray['end_zone_id'])
+            : null;
+
+        $trips[] = new Trip(
+            $orderArray['trip_id'],
+            $startTime,
+            $endTime,
+            $status,
+            $orderArray['length'],
+            $zoneStart,
+            $zoneEnd,
+            $driver,
+            $vehicle
+        );
+    }
+
+    return $trips;
+}
