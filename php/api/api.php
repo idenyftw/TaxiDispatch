@@ -12,6 +12,9 @@ if ($method === 'POST')
 {
     switch($endpoint)
     {
+        case "user/get_all":
+            fetchAllUsers($data);
+            break;
         case "user/log_in":
             logIn($data);
             break;
@@ -21,7 +24,7 @@ if ($method === 'POST')
         case "zone/get_all":
             fetchAllZones();
             break;
-        case "fleet/get_all":
+        case "vehicle/get_all":
             fetchAllVehicles();
             break;
         case "driver/get_all":

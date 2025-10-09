@@ -1,14 +1,31 @@
 <?php
 
+require_once __DIR__ . '/../classes/zone.php';
+require_once __DIR__ . '/../classes/vehicle.php';
+require_once __DIR__ . '/../classes/driver.php';
+require_once __DIR__ . '/../classes/trip.php';
+require_once __DIR__ . '/../classes/user.php';
 
-require __DIR__ . '/../repo/users-repo.php';
-require __DIR__ . '/../repo/zones-repo.php';
-require __DIR__ . '/../repo/vehicles-repo.php';
-require __DIR__ . '/../repo/drivers-repo.php';
-require __DIR__ . '/../repo/trips-repo.php';
+require_once __DIR__ . '/../classes/notification.php';
+require_once __DIR__ . '/../classes/log.php';
 
-require __DIR__ . '/../classes/notification.php';
-require __DIR__ . '/../classes/log.php';
+function fetchAllUsers()
+{
+    try
+    {
+        $users = User::getAllUsers();
+        http_response_code(200);
+
+        $notification = new Notification("Fetched all users");
+
+        echo json_encode(['status' => 'success','message' => $notification, "users" => $users]);
+    }
+    catch(Exception $e) 
+    {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
 
 function logIn($data)
 {
@@ -70,7 +87,7 @@ function logIn($data)
         {
             http_response_code(401);
 
-            $notification = new Notfication("Invalid login credentials");
+            $notification = new Notification("Invalid login credentials");
 
             echo json_encode(['status' => 'error', 'message' => $notification]);
         }
@@ -136,7 +153,7 @@ function fetchAllZones()
 {
     try
     {
-        $zones = getAllZones();
+        $zones = Zone::getAllZones();
         http_response_code(200);
 
         $notification = new Notification("Fetched all zones");
@@ -155,11 +172,11 @@ function fetchAllVehicles()
 {
     try
     {
-        $vehicles = getAllVehicles();
+        $vehicles = Vehicle::getAllVehicles();
         http_response_code(200);
 
         $notification = new Notification("Fetched all vehicles");
-        echo json_encode(['status' => 'success','message' => $notification, "fleet" => $vehicles]);
+        echo json_encode(['status' => 'success','message' => $notification, "vehicles" => $vehicles]);
 
     }
     catch(Exception $e) 
@@ -173,7 +190,7 @@ function fetchAllDrivers()
 {
     try
     {
-        $drivers = getAllDrivers();
+        $drivers = Driver::getAllDrivers();
         http_response_code(200);
 
         $notification = new Notification("Fetched all drivers");
@@ -191,7 +208,7 @@ function fetchAllTrips()
 {
     try
     {
-        $trips = getAllTrips();
+        $trips = Trip::getAllTrips();
 
         http_response_code(200);
 
@@ -210,7 +227,7 @@ function fetchAllOrders()
 {
     try
     {
-        $orders = getAllOrders();
+        $orders = Trip::getAllOrders();
 
         http_response_code(200);
 
