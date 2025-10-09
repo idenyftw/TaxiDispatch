@@ -38,6 +38,6 @@ if ($method === 'POST')
 }
 else 
 {
-    http_response_code(405);
+    http_response_code(403);
     echo json_encode(['error' => 'Invalid request method']);
 }

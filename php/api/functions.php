@@ -110,7 +110,7 @@ function fetchUserRole($data)
             }
             else
             {
-                http_response_code(404);
+                http_response_code(401);
 
                 $notification = new Notification("User not found");
 
@@ -119,9 +119,9 @@ function fetchUserRole($data)
         }
         else
         {
-            http_response_code(404);
+            http_response_code(401);
 
-            $notification = new Notfication("Invalid token");
+            $notification = new Notification("Invalid token");
 
             echo json_encode(['status' => 'error', 'message' => $notification]);
         }
