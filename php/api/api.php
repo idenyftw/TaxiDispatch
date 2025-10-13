@@ -33,7 +33,7 @@ if ($method === 'POST')
         case "trip/get_all":
             fetchAllTrips();
             break;
-        case "trip/get_awaiting":
+        case "trip/get_orders":
             fetchAllOrders();
             break;
         default:

@@ -5,31 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taxi Dispatch</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <h1>Taxi Dispatch</h1>
-    <div class="container" id="login">
-        <h3>Log In</h3>
-        <form method="post" id="loginForm" class="needs-validation" novalidate>
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="container frost" id="loginContainer">
+            <form method="post" id="loginForm" class="needs-validation" novalidate>
+                <h3>Log In</h3>
 
-            <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input name="username" type="text" class="form-control" id="inputUsername" placeholder="" minlength="4" required>
-                <div class="invalid-feedback">
-                    Invalid Username
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input name="username" type="text" class="form-control" id="inputUsername" placeholder="" minlength="4" required>
+                    <div class="invalid-feedback">
+                        Invalid Username
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input name="password" type="password" class="form-control" id="inputPassword" placeholder="" minlength="8" required>
-                <div class="invalid-feedback">
-                    Invalid Password
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input name="password" type="password" class="form-control" id="inputPassword" placeholder="" minlength="8" required>
+                    <div class="invalid-feedback">
+                        Invalid Password
+                    </div>
                 </div>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Log In</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </form>
+        </div>
     </div>
 
 <!--

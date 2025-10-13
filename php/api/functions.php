@@ -39,15 +39,13 @@ function logIn($data)
     {
         if($inputUsername && $inputPassword)
         {
-            $userId = getUserId($inputUsername);
+            $userId = User::getUserId($inputUsername);
 
             if($userId != -1)
             {
-                $passwordHash = getUserPasswordHash($userId);
-
-                if(password_verify($inputPassword, $passwordHash))
+                if(User::verifyUserPassword($userId, $inputPassword))
                 {
-                    $token = updateUserToken($userId);
+                    $token = User::updateUserToken($userId);
 
                     $log = new Log(date("Y-m-d H:i:s"), $inputUsername . " logged in succesfully");
                     $log->write();
@@ -107,7 +105,7 @@ function fetchUserRole($data)
     {
         if($token)
         {
-            $role = getUserRole($token);
+            $role = User::getUserRole($token);
 
             if($role != "")
             {

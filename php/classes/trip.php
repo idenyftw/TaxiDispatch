@@ -6,15 +6,15 @@ require_once 'driver.php';
 require_once 'vehicle.php';
 require_once 'zone.php';
 
-enum TripStatus
+enum TripStatus: string
 {
-    case Cancelled;
-    case Ended;
-    case Ongoing;
-    case AwaitingConfirmation;
+    case Cancelled  = 'cancelled';
+    case Ended      = 'ended';
+    case Ongoing    = 'ongoing';
+    case AwaitingConfirmation = 'awaiting_confirmation';
 }
 
-class Trip implements JsonSerializable
+class Trip
 {
     public int $id;
 
@@ -51,165 +51,47 @@ class Trip implements JsonSerializable
         $this->vehicle      = $vehicle;
     }
 
-    public function jsonSerialize(): array
-    {
-        return [
-            'id'        => $this->id,
-            'startTime' => $this->startTime?->format('Y-m-d H:i:s'),
-            'endTime'   => $this->endTime?->format('Y-m-d H:i:s'),
-            'status'    => $this->status->name,
-            'lengthKm'  => $this->lengthKm,
-            'zoneStart' => $this->zoneStart ? [
-                'id'      => $this->zoneStart->id,
-                'name'    => $this->zoneStart->name,
-                'zipCode' => $this->zoneStart->zipCode,
-            ] : null,
-            'zoneEnd' => $this->zoneEnd ? [
-                'id'      => $this->zoneEnd->id,
-                'name'    => $this->zoneEnd->name,
-                'zipCode' => $this->zoneEnd->zipCode,
-            ] : null,
-            'driver' => $this->driver ? [
-                'id'        => $this->driver->id,
-                'firstName' => $this->driver->firstName,
-                'lastName'  => $this->driver->lastName,
-            ] : null,
-            'vehicle' => $this->vehicle ? [
-                'id'           => $this->vehicle->id,
-                'licensePlate' => $this->vehicle->licensePlate,
-                'type'         => $this->vehicle->type ? [
-                    'id'     => $this->vehicle->type->id,
-                    'nameEn' => $this->vehicle->type->nameEn,
-                    'nameFr' => $this->vehicle->type->nameFr,
-                ] : null,
-            ] : null,
-        ];
-    }
-
     public static function getAllTrips(): array
     {
         $pdo = connDB();
 
         $stmt = $pdo->prepare('SELECT * FROM Trips;');
         $stmt->execute();
-        
-        $tripsArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $trips = [];
-
-        foreach ($tripsArray as $tripArray) 
-        {
-            $status = match ($tripArray['status']) 
-            {
-                'cancelled'             => TripStatus::Cancelled,
-                'ended'                 => TripStatus::Ended,
-                'ongoing'               => TripStatus::Ongoing,
-                'awaiting_confirmation' => TripStatus::AwaitingConfirmation,
-                default                 => throw new Exception("Unknown trip status: ".$tripArray['status'])
-            };
-
-            // Handle null
-            $startTime = !empty($tripArray['start_time'])
-                ? new DateTime($tripArray['start_time'])
-                : null;
-
-            $endTime = !empty($tripArray['end_time'])
-                ? new DateTime($tripArray['end_time'])
-                : null;
-
-            $driver  = !empty($tripArray['driver_id'])
-                ? getDriverById($tripArray['driver_id'])
-                : null;
-
-            $vehicle = !empty($tripArray['vehicle_id'])
-                ? getVehicleById($tripArray['vehicle_id'])
-                : null;
-
-            $zoneStart = !empty($tripArray['start_zone_id'])
-                ? getZoneById($tripArray['start_zone_id'])
-                : null;
-
-            $zoneEnd = !empty($tripArray['end_zone_id'])
-                ? getZoneById($tripArray['end_zone_id'])
-                : null;
-
-            $trips[] = new Trip(
-                $tripArray['trip_id'],
-                $startTime,
-                $endTime,
-                $status,
-                $tripArray['length'],
-                $zoneStart,
-                $zoneEnd,
-                $driver,
-                $vehicle
-            );
-        }
-
-        return $trips;
+        return array_map(
+            fn($row) => Trip::fromArray($row),
+            $stmt->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
 
     public static function getAllOrders(): array
     {
         $pdo = connDB();
 
-        $stmt = $pdo->prepare('SELECT * FROM Trips WHERE status = "awaiting_confirmation"; ');
+        $stmt = $pdo->prepare('SELECT * FROM Trips WHERE status = "awaiting_confirmation";');
         $stmt->execute();
-        
-        $ordersArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $trips = [];
+        return array_map(
+            fn($row) => Trip::fromArray($row),
+            $stmt->fetchAll(PDO::FETCH_ASSOC)
+        );
+    }
 
-        foreach ($ordersArray as $orderArray) 
-        {
-            $status = match ($orderArray['status']) 
-            {
-                'cancelled'             => TripStatus::Cancelled,
-                'ended'                 => TripStatus::Ended,
-                'ongoing'               => TripStatus::Ongoing,
-                'awaiting_confirmation' => TripStatus::AwaitingConfirmation,
-                default                 => throw new Exception("Unknown trip status: ".$orderArray['status'])
-            };
+    private static function fromArray(array $row): self
+    {
+        $status = TripStatus::tryFrom($row['status']) ?? TripStatus::Cancelled;
 
-            // Handle null
-            $startTime = !empty($orderArray['start_time'])
-                ? new DateTime($orderArray['start_time'])
-                : null;
-
-            $endTime = !empty($orderArray['end_time'])
-                ? new DateTime($orderArray['end_time'])
-                : null;
-
-            $driver  = !empty($orderArray['driver_id'])
-                ? getDriverById($orderArray['driver_id'])
-                : null;
-
-            $vehicle = !empty($orderArray['vehicle_id'])
-                ? getVehicleById($orderArray['vehicle_id'])
-                : null;
-
-            $zoneStart = !empty($orderArray['start_zone_id'])
-                ? getZoneById($orderArray['start_zone_id'])
-                : null;
-
-            $zoneEnd = !empty($orderArray['end_zone_id'])
-                ? getZoneById($orderArray['end_zone_id'])
-                : null;
-
-            $trips[] = new Trip(
-                $orderArray['trip_id'],
-                $startTime,
-                $endTime,
-                $status,
-                $orderArray['length'],
-                $zoneStart,
-                $zoneEnd,
-                $driver,
-                $vehicle
-            );
-        }
-
-        return $trips;
+        return new self(
+            (int)$row['trip_id'],
+            $row['start_time'] ? new DateTime($row['start_time']) : null,
+            $row['end_time'] ? new DateTime($row['end_time']) : null,
+            $status,    
+            (float)$row['length'],
+            $row['start_zone_id'] ? Zone::getZoneById($row['start_zone_id']) : null,
+            $row['end_zone_id'] ?   Zone::getZoneById($row['end_zone_id']) : null,
+            $row['driver_id'] ?     Driver::getDriverById($row['driver_id']) : null,
+            $row['vehicle_id'] ?    Vehicle::getVehicleById($row['vehicle_id']) : null
+        );
     }
 }
 

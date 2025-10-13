@@ -20,6 +20,7 @@ export function loadAdminPage()
 
     loadTrips();
     loadZones();
+    loadVehicles();
 
     //Append rows
     gridMain.appendChild(firstRow);
@@ -117,8 +118,6 @@ function loadTrips()
         .then(data =>{
             if(data.status == "success")
             {
-                console.log(data);
-
                 tripsTableBody.textContent = "";
 
                 const trips = data.trips;
@@ -181,7 +180,6 @@ function loadTrips()
         fetchAllTrips(tripsSearchInput.value);
     }
 }
-
 
 // == ZONES CONTAINER ===
 
@@ -321,63 +319,141 @@ function loadZones()
     }
 }
 
-// OLD
+// == VEHICLES CONTAINER == 
 
-function fetchFleet()
+function loadVehicles()
 {
-    console.log("fetch fleet");
-    const data = {endpoint: "fleet/get_all"};
+    // Init container
+    const vehiclesContainer = container.cloneNode();
+    vehiclesContainer.classList.add("col-4");
 
-    fetch("../php/api/api.php", {
-        method: "POST",
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data =>{
-        if(data.status == "success")
-        {
-            console.log(data);
-            alert(data.message.msg);
+    // == VEHICLES CONTAINER HEAD ===
 
-            let fleetTableBody = document.querySelector("#fleetTable tbody");
+    let vehiclesHead = containerHead.cloneNode();
+    
+    // Container title
+    let vehiclesTitle = containerHeadTitle.cloneNode();
+    vehiclesTitle.textContent = "Vehicles";
+    vehiclesHead.appendChild(vehiclesTitle);
 
-            const fleet = data.fleet;
-            fleet.forEach(vehicle => {
-                let tableRow = document.createElement('tr');
-            
-                let idCell = document.createElement('td');
-                let plateCell = document.createElement('td');
-                let typeCell  = document.createElement('td');
+    // Search Input
+    let vehiclesSearchInput = searchInput.cloneNode();
+    vehiclesSearchInput.setAttribute("placeholder", "Search:");
+    vehiclesSearchInput.setAttribute("id", "searchVehicles");
+    vehiclesSearchInput.addEventListener("input",searchVehicles);
+    vehiclesHead.appendChild(vehiclesSearchInput);
 
-                let btnDetails = document.createElement("button");
-                btnDetails.classList.add("btn");
-                btnDetails.classList.add("btn-primary");
-                btnDetails.textContent = "Details";
-                btnDetails.addEventListener("click", () => getVehicleDetails(vehicle.id));
+    vehiclesContainer.appendChild(vehiclesHead);
 
-                idCell.textContent =    vehicle.id;
-                plateCell.textContent = vehicle.licensePlate;
-                typeCell.textContent =  vehicle.type.nameFr;
+    // == VEHICLES CONTAINER BODY ===
 
-                tableRow.appendChild(idCell);
-                tableRow.appendChild(plateCell);
-                tableRow.appendChild(typeCell);
-                tableRow.appendChild(btnDetails);
+    let vehiclesBody = containerBody.cloneNode();
 
-                fleetTableBody.appendChild(tableRow);
-            });
-        }
-        else
-        {
-            alert(data.message);
-            console.log("Error:", data);
-        }
-    })
-}
+    // == VEHICLES TABLE ==
+    let vehiclesTable = table.cloneNode();
+    let vehiclesTableHead = thead.cloneNode();
+    let vehiclesTableHeadRow = tr.cloneNode();
 
-function getVehicleDetails(id)
-{
-    console.log("Get vehicle " + id + " details");
+    // zones table columns
+    let vehicleHeaderCols = 
+    [
+        "#", 
+        "Plate", 
+        "Type Fr", 
+        "Type En", 
+        "Info"
+    ];
+
+    // Populate table header with columns
+    vehicleHeaderCols.forEach(column => {
+        let col = document.createElement("th");
+        col.textContent = column;
+
+        vehiclesTableHeadRow.appendChild(col);
+    });
+
+    let vehiclesTableBody = tbody.cloneNode();
+
+    vehiclesTableHead.appendChild(vehiclesTableHeadRow);
+    vehiclesTable.appendChild(vehiclesTableHead);
+    vehiclesTable.appendChild(vehiclesTableBody);
+
+    vehiclesBody.appendChild(vehiclesTable);
+    vehiclesContainer.appendChild(vehiclesBody);
+
+    secondRow.appendChild(vehiclesContainer);
+
+    fetchAllVehicles();
+
+    function searchVehicles()
+    {
+        fetchAllVehicles(vehiclesSearchInput.value);
+    }
+
+    function fetchAllVehicles(keyword = null)
+    {
+        console.log("fetch vehicles " + keyword);
+        const data = {endpoint: "vehicle/get_all"};
+
+        fetch("../php/api/api.php", {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data =>{
+            if(data.status == "success")
+            {
+                vehiclesTableBody.textContent = "";
+
+                const vehicles = data.vehicles;
+                vehicles.forEach(vehicle => {
+                      if(keyword == "" 
+                    || keyword == null 
+                    || vehicle.licensePlate.toLowerCase().includes(keyword.toLowerCase()) 
+                    || vehicle.type.nameEn.toLowerCase().includes(keyword.toLowerCase())
+                    || vehicle.type.nameFr.toLowerCase().includes(keyword.toLowerCase())
+                    )
+                    {
+                        let tableRow = document.createElement('tr');
+                    
+                        let idCell    = document.createElement('td');
+                        let plateCell = document.createElement('td');
+                        let typeFrCell  = document.createElement('td');
+                        let typeEnCell  = document.createElement('td');
+
+                        let btnDetails = document.createElement("button");
+                        btnDetails.classList.add("btn");
+                        btnDetails.classList.add("btn-primary");
+                        btnDetails.textContent = "Details";
+                        btnDetails.addEventListener("click", () => getVehicleDetails(vehicle.id));
+
+                        idCell.textContent      =  vehicle.id;
+                        plateCell.textContent   =  vehicle.licensePlate;
+                        typeFrCell.textContent  =  vehicle.type.nameFr;
+                        typeEnCell.textContent  =  vehicle.type.nameEn;
+
+                        tableRow.appendChild(idCell);
+                        tableRow.appendChild(plateCell);
+                        tableRow.appendChild(typeFrCell);
+                        tableRow.appendChild(typeEnCell);
+                        tableRow.appendChild(btnDetails);
+
+                        vehiclesTableBody.appendChild(tableRow);
+                    }
+                });
+            }
+            else
+            {
+                alert(data.message);
+                console.log("Error:", data);
+            }
+        })
+    }
+
+    function getVehicleDetails(id)
+    {
+        console.log("Get vehicle " + id + " details");
+    }
 }
 
 function fetchDrivers()

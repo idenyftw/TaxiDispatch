@@ -103,7 +103,7 @@ function loadOrders()
     function fetchAllOrders(keyword = "")
     {
         console.log("fetch orders");
-        const data = {endpoint: "trip/get_awaiting"};
+        const data = {endpoint: "trip/get_orders"};
 
         fetch("../php/api/api.php", {
             method: "POST",

@@ -38,8 +38,8 @@ class Zone
             throw $e;
         }
     }
-
-    function getZoneById(int $id)
+    
+    public static function getZoneById(int $id)
     {
         try {
             $pdo = connDB();
@@ -65,6 +65,4 @@ class Zone
             throw $e;
         }
     }
-
-
 }

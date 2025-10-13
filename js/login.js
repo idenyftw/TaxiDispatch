@@ -2,7 +2,6 @@ const loginForm = document.querySelector("#loginForm");
 
 (() => {
     'use strict'
-
     loginForm.addEventListener("submit", event => {
         event.preventDefault();
         event.stopPropagation();

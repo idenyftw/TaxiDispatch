@@ -29,6 +29,8 @@ refreshButton.innerHTML = refreshSvg;
 
 const table = document.createElement("table");
 table.classList.add("table");
+table.classList.add("table-striped");
+table.classList.add("table-hover");
 
 const thead = document.createElement("thead"); 
 const tbody = document.createElement("tbody"); 
