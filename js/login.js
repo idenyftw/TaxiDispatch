@@ -29,10 +29,11 @@ const loginForm = document.querySelector("#loginForm");
             })
             .then(response => response.json())
             .then(data =>{
+                alert("Notification: " + data.message.msg);
+                
                 if(data.status == "success")
                 {
                     document.cookie = "token="+data.token;
-                    console.log("Message:", data.log);
                     
                     window.location.href = "html/dashboard.html";
                 }
