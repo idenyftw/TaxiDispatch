@@ -31,6 +31,10 @@ Implementation coté chauffeur
 
 Affichage pages differentes en fonction du rôle
 
+# 13.10.25
+
+Resoudre bugs et préparer présentation
+
 # Présentation 16.10.25
 
 Première version dashboard :
