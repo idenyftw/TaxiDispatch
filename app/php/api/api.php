@@ -40,7 +40,9 @@ if ($method === 'POST')
             echo json_encode(['status' => 'error', 'message' => "The specified endpoint doesn't exist"]);
             break;
     }    
-}else if ($method === 'PUT'){
+}
+//Methode put pour pouvoir accepter les requette
+else if ($method === 'PUT'){
     switch($endpoint)
     {
         case "trip/Accept":

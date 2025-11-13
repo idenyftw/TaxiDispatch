@@ -239,6 +239,7 @@ function fetchAllOrders()
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
+//Fonction afin de pouvoir accepter les trips
 function acceptTheTrip($data){
     $inputTrip = trim($data['trip'] ?? '');
     $token = trim($data['token'] ?? '');
@@ -266,6 +267,7 @@ function acceptTheTrip($data){
             echo json_encode(['status' => 'error', 'message' => $notification]);
         }
     }
+//------------
     catch(Exception $e) 
     {
         http_response_code(500);

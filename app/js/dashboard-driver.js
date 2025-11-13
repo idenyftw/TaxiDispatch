@@ -121,6 +121,7 @@ function loadOrders(token)
 
                 const orders = data.orders;
                 orders.forEach(trip => {
+                    //verifie si le trip est déja refusé
                     let declinedTrip = JSON.parse(localStorage.getItem("declinedTrip"));
                     let result = true;
                     if (declinedTrip != null){
@@ -129,6 +130,7 @@ function loadOrders(token)
                         })
                     }
                     if (result == true){
+                    //------------
                         if(keyword == "" 
                         || keyword == null 
                         || (trip.startTime != null && trip.startTime.toLowerCase().includes(keyword.toLowerCase()))
@@ -189,6 +191,7 @@ function loadOrders(token)
             }
         })
     }
+    //Fonction qui va decliner les trajets (il sont stocké dans le local storage)
     function declineTrip(TheTrip){
         console.log("click")
         let declinedTrip = JSON.parse(localStorage.getItem("declinedTrip"));
@@ -200,7 +203,8 @@ function loadOrders(token)
         localStorage.setItem("declinedTrip", JSON.stringify(declinedTrip));
         location.reload(); 
     }
-
+    //------------
+    // fonction qui va appeler l'api avec le token du driver l'id du trip et reload la page si tout est fonctionel
     function updateTrip(TheTrip)
     {
            const data = { 
@@ -226,7 +230,7 @@ function loadOrders(token)
                 }
             })
     }
-
+    //------------
     function searchOrders()
     {
         fetchAllOrders(ordersSearchInput.value);

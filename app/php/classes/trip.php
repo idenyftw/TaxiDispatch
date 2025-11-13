@@ -93,17 +93,18 @@ class Trip
             $row['vehicle_id'] ?    Vehicle::getVehicleById($row['vehicle_id']) : null
         );
     }
-public static function acceptTrip(int $id, int $trip){
-    $pdo = connDB();
-    $stmt = $pdo->prepare("UPDATE `Trips` SET `start_time`=:startTime, `status`=:status, `driver_id`=:driver WHERE `Trips`.`trip_id`=:trip");
-    $stmt->execute([
-        ":startTime" => date("Y-m-d H:i:s"),
-        ":status" => "ongoing",
-        ":driver" => $id,
-        ":trip" => $trip
-    ]);
-    return true;
-}
-
+    //Fonction qui va update le trips voulu en ajoutant le status la date le driver en fonction du trip
+    public static function acceptTrip(int $id, int $trip){
+        $pdo = connDB();
+        $stmt = $pdo->prepare("UPDATE `Trips` SET `start_time`=:startTime, `status`=:status, `driver_id`=:driver WHERE `Trips`.`trip_id`=:trip");
+        $stmt->execute([
+            ":startTime" => date("Y-m-d H:i:s"),
+            ":status" => "ongoing",
+            ":driver" => $id,
+            ":trip" => $trip
+        ]);
+        return true;
+    }
+    //------------
 }
 
