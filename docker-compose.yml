@@ -1,0 +1,57 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taxi_web
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./app/logs:/var/www/html/app/logs
+    command: bash -c "if [ ! -d vendor ]; then composer install --no-dev --optimize-autoloader; fi && chmod -R 755 /var/www/html/app && apache2-foreground"
+    depends_on:
+      - db
+    networks:
+      - taxi_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: taxi_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: Super
+    ports:
+      - "8082:80"
+    depends_on:
+      - db
+    networks:
+      - taxi_net
+
+  db:
+    image: mariadb
+    container_name: taxi_db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: Super
+      MARIADB_DATABASE: TaxiDispatch
+      MARIADB_USER: dev
+      MARIADB_PASSWORD: Super
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql/dump_dispatch.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - taxi_net
+
+volumes:
+  db_data:
+
+networks:
+  taxi_net:
+    driver: bridge

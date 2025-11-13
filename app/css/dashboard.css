@@ -1,0 +1,14 @@
+.table
+{
+    margin: 10px;
+    display: block;
+    min-height: 50vh;
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+
+#gridMain
+{
+        
+}
+
