@@ -8,9 +8,14 @@ services:
       - "8081:80"
     volumes:
       - ./:/var/www/html
+      - ./app/php/api:/var/www/html/api
       - ./docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./app/logs:/var/www/html/app/logs
     command: bash -c "if [ ! -d vendor ]; then composer install --no-dev --optimize-autoloader; fi && chmod -R 755 /var/www/html/app && apache2-foreground"
+    environment:
+      - VIRTUAL_HOST=TaxiDispatch.local
+    extra_hosts:
+      - "TaxiDispatch.local:127.0.0.1"
     depends_on:
       - db
     networks:
@@ -46,6 +51,20 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql/dump_dispatch.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - taxi_net
+      
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: taxi_swagger
+    ports:
+      - "8083:8080" # Swagger-UI sera accessible sur le port 8083
+    environment:
+      - SWAGGER_JSON=/swagger/swagger.json
+    volumes:
+      - ./swagger:/swagger  # Lier le dossier contenant le fichier swagger.json généré
+    depends_on:
+      - web  # Swagger doit attendre que le service web soit opérationnel
     networks:
       - taxi_net
 

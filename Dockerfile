@@ -31,6 +31,18 @@ COPY composer.json composer.lock* ./
 
 # Installer les dépendances inclut slim 
 RUN composer install --no-dev --optimize-autoloader
+# Copier la configuration du vhost dans le container
+COPY ./docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Activer le site et recharger Apache
+RUN a2ensite 000-default.conf && \
+    service apache2 restart
+
 # Copier le reste de l'application
 COPY . .
 
+# Créer le répertoire swagger dans le conteneur
+RUN mkdir -p /var/www/html/swagger
+
+# Copier swagger.php
+COPY swagger.php /var/www/html/swagger.php

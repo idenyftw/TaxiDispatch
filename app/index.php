@@ -1,9 +1,14 @@
 <?php
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 use Slim\Factory\AppFactory;
+use App\php\api\ApiController;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
+require_once __DIR__ . '/php/api/functions.php';
 $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
@@ -95,22 +100,17 @@ $app->get('/hello/{name}', function ($request, $response, $args) {
 
 
 // API JSON
-$app->get('/api/info', function ($request, $response) {
-    $data = [
-        'message' => 'QuickAWEB API',
-        'version' => '1.0.0',
-        'framework' => 'Slim Framework 4',
-        'routes' => [
-            'GET /' => 'Page d\'accueil',
-            'GET /hello' => 'Route Hello',
-            'GET /api/info' => 'Informations API'
-        ]
-    ];
-    
-    $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-    return $response->withHeader('Content-Type', 'application/json');
-});
 
+$app->get('/api/info', [ApiController::class, 'info']);
+$app->post('/api/user/get_all', [ApiController::class, 'getAllUsers']);
+$app->post('/api/user/log_in', [ApiController::class, 'logIn']);
+$app->post('/api/user/get_role', [ApiController::class, 'getUserRole']);
+$app->post('/api/zone/get_all', [ApiController::class, 'getAllZones']);
+$app->post('/api/vehicle/get_all', [ApiController::class, 'getAllVehicles']);
+$app->post('/api/driver/get_all', [ApiController::class, 'getAllDrivers']);
+$app->post('/api/trip/get_all', [ApiController::class, 'getAllTrips']);
+$app->post('/api/trip/get_orders', [ApiController::class, 'getAllOrders']);
+$app->put('/api/trip/Accept', [ApiController::class, 'acceptTrip']);
 
 // Lancer l'application
 $app->run();

@@ -45,12 +45,11 @@ class User
             foreach ($usersArray as $user) {
                 
                 $userRole = Role::tryFrom($user['role']) ?? Role::Other;
-
                 $driver = Driver::getDriverById($user['driver_id']);
 
                 $users[] = new User($user['user_id'], $user['username'], $user['first_name'], $user['last_name'], $userRole, $driver);
             }
-
+           
             return $users;
 
         } catch (PDOException $e) {

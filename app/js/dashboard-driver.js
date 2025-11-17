@@ -166,7 +166,7 @@ function loadOrders(token)
                             let BtnAccept = document.createElement("button");
                             BtnAccept.classList.add("btn");
                             BtnAccept.classList.add("btn-primary");
-                            BtnAccept.textContent = "BtnAccept";
+                            BtnAccept.textContent = "Accept";
                             BtnAccept.addEventListener("click", () => updateTrip(trip.id));
                             acceptCell.appendChild(BtnAccept);
 
