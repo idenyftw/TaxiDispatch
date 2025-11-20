@@ -18,12 +18,12 @@ function fetchAllUsers()
 
         $notification = new Notification("Fetched all users");
 
-        echo json_encode(['status' => 'success','message' => $notification, "users" => $users]);
+        return json_encode(['status' => 'success','message' => $notification, "users" => $users]);
     }
     catch(Exception $e) 
     {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        return json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
 
@@ -156,13 +156,13 @@ function fetchAllZones()
 
         $notification = new Notification("Fetched all zones");
 
-        echo json_encode(['status' => 'success','message' => $notification, "zones" => $zones]);
+        return json_encode(['status' => 'success','message' => $notification, "zones" => $zones]);
 
     }
     catch(Exception $e) 
     {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        return json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
 
@@ -174,13 +174,13 @@ function fetchAllVehicles()
         http_response_code(200);
 
         $notification = new Notification("Fetched all vehicles");
-        echo json_encode(['status' => 'success','message' => $notification, "vehicles" => $vehicles]);
+        return json_encode(['status' => 'success','message' => $notification, "vehicles" => $vehicles]);
 
     }
     catch(Exception $e) 
     {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        return json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
 
@@ -192,13 +192,13 @@ function fetchAllDrivers()
         http_response_code(200);
 
         $notification = new Notification("Fetched all drivers");
-        echo json_encode(['status' => 'success','message' => $notification, "drivers" => $drivers]);
+        return json_encode(['status' => 'success','message' => $notification, "drivers" => $drivers]);
 
     }
     catch(Exception $e) 
     {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        return json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
 
@@ -212,12 +212,12 @@ function fetchAllTrips()
 
         $notification = new Notification("Fetched all trips");
 
-        echo json_encode(['status' => 'success','message' => $notification, "trips" => $trips]);
+        return json_encode(['status' => 'success','message' => $notification, "trips" => $trips]);
     }
     catch(Exception $e) 
     {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        return json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
 
@@ -231,12 +231,12 @@ function fetchAllOrders()
 
         $notification = new Notification("Fetched all orders");
 
-        echo json_encode(['status' => 'success','message' => $notification, "orders" => $orders]);
+        return json_encode(['status' => 'success','message' => $notification, "orders" => $orders]);
     }
     catch(Exception $e) 
     {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        return json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
 //Fonction afin de pouvoir accepter les trips
@@ -267,7 +267,6 @@ function acceptTheTrip($data){
             echo json_encode(['status' => 'error', 'message' => $notification]);
         }
     }
-//------------
     catch(Exception $e) 
     {
         http_response_code(500);

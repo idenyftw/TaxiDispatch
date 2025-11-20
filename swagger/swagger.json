@@ -13,6 +13,7 @@
     "paths": {
       "/user/get_all": {
         "post": {
+          "tags": ["User"],
           "summary": "Obtenir tous les utilisateurs",
           "operationId": "getAllUsers",
           "responses": {
@@ -32,6 +33,7 @@
       },
       "/user/log_in": {
         "post": {
+          "tags": ["User"],
           "summary": "Connexion de l'utilisateur",
           "operationId": "logIn",
           "requestBody": {
@@ -75,6 +77,7 @@
       },
       "/user/get_role": {
         "post": {
+          "tags": ["User"],
           "summary": "Obtenir le rôle d'un utilisateur",
           "operationId": "getUserRole",
           "requestBody": {
@@ -112,6 +115,7 @@
       },
       "/zone/get_all": {
         "post": {
+          "tags": ["Zone"],
           "summary": "Obtenir les zones",
           "operationId": "getAllZones",
           "requestBody": {
@@ -147,6 +151,7 @@
       },
       "/vehicle/get_all": {
         "post": {
+          "tags": ["Vehicle"],
           "summary": "Obtenir tous les véhicules",
           "operationId": "getAllVehicles",
           "responses": {
@@ -166,6 +171,7 @@
       },
       "/driver/get_all": {
         "post": {
+          "tags": ["Driver"],
           "summary": "Obtenir tous les conducteurs",
           "operationId": "getAllDrivers",
           "responses": {
@@ -185,6 +191,7 @@
       },
       "/trip/get_all": {
         "post": {
+          "tags": ["Trip"],
           "summary": "Obtenir tous les trajets",
           "operationId": "getAllTrips",
           "responses": {
@@ -204,6 +211,7 @@
       },
       "/trip/get_orders": {
         "post": {
+          "tags": ["Trip"],
           "summary": "Obtenir toutes les commandes des trajets",
           "operationId": "getAllOrders",
           "responses": {
@@ -223,6 +231,7 @@
       },
       "/trip/Accept": {
         "put": {
+          "tags": ["Trip"],
           "summary": "Accepter un voyage",
           "operationId": "acceptTrip",
           "requestBody": {

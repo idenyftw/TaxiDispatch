@@ -21,7 +21,7 @@ services:
     networks:
       - taxi_net
 
-  phpmyadmin:
+  phpmyadmin: 
     image: phpmyadmin/phpmyadmin
     container_name: taxi_phpmyadmin
     restart: unless-stopped

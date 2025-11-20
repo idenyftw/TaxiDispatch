@@ -19,14 +19,14 @@ class User
     public string $lastName;
     public ?Driver $driver;
 
-    public function __construct(int $id, string $username, string $firstName, string $lastName, Role $role, Driver $driver)
+    public function __construct(int $id, string $username, string $firstName, string $lastName, Role $role, ?Driver $driver)
     {
         $this->id        = $id;
         $this->username  = $username;
         $this->firstName = $firstName;
         $this->lastName  = $lastName;
         $this->role      = $role;
-        $this->$driver   = $driver;
+        $this->driver   = $driver;
     }
 
     public static function getAllUsers()
@@ -37,15 +37,16 @@ class User
             $sql = "SELECT * FROM Users";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
-
-            $usersArray =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $usersArray =  $stmt->fetchAll();
 
             $users = [];
 
             foreach ($usersArray as $user) {
                 
                 $userRole = Role::tryFrom($user['role']) ?? Role::Other;
-                $driver = Driver::getDriverById($user['driver_id']);
+
+                $driver = $user['driver_id'] == null ? null : Driver::getDriverById($user['driver_id']);
 
                 $users[] = new User($user['user_id'], $user['username'], $user['first_name'], $user['last_name'], $userRole, $driver);
             }
@@ -70,7 +71,7 @@ class User
 
         $userRole = Role::tryFrom($userInfo['role']) ?? Role::Other;
 
-        $driver   = Driver::getDriverById($userInfo['driver_id']);
+        $driver = $userInfo['driver_id'] == null ? null : Driver::getDriverById($user['driver_id']);
 
         $user     = new User($userInfo['user_id'], $userInfo['username'], $userInfo['first_name'], $userInfo['last_name'], $userRole, $driver);
 

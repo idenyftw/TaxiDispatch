@@ -44,5 +44,3 @@ COPY . .
 # Créer le répertoire swagger dans le conteneur
 RUN mkdir -p /var/www/html/swagger
 
-# Copier swagger.php
-COPY swagger.php /var/www/html/swagger.php
